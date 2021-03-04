@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static servermultithread.ServerMultiThread.risultato;
 
 /**
  *
@@ -24,22 +25,24 @@ public class ServerThread implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Serverino  partito: "
-                + clientSocket.getInetAddress());
+        System.out.println("Serverino  partito: "  + clientSocket.getInetAddress());
         try {
 
-            PrintWriter out
-                    = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
             String richiesta = "";
-            while (!richiesta.equals("exit")) {
+//            while (!richiesta.equals("exit")) {
                 System.out.println("serverino in ascolto...");
                 richiesta = in.readLine();
-                System.out.println("stringa dal client: " + richiesta);
-                out.println("Caratteri: " + richiesta.length());
-            }
+                System.out.println("numero dal client: " + richiesta);
 
+//            }
+            int num = Integer.parseInt(richiesta);
+            for(; num > 0; num--){
+                Somma s = new Somma(num);
+                risultato = risultato + s.getNum();
+            }
+            System.out.println(risultato);
             out.close();
             clientSocket.close();
 
